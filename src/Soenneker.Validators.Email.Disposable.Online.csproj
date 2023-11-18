@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <Platforms>AnyCPU</Platforms>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Description>A validation module checking for disposable email addresses via online sources</Description>
+        <Version Condition="'$(BUILD_VERSION)' == ''">2.1.0</Version>
+        <Version Condition="'$(BUILD_VERSION)' != ''">$(BUILD_VERSION)</Version>
+        <AssemblyName>Soenneker.Validators.Email.Disposable.Online</AssemblyName>
+        <PackageId>Soenneker.Validators.Email.Disposable.Online</PackageId>
+        <PackageTags>validation validator email disposable temporary c# .net dotnet</PackageTags>
+        <Copyright>Copyright © 2023 Jake Soenneker</Copyright>
+        <Authors>Jake Soenneker</Authors>
+        <Company>https://soenneker.com</Company>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IsPackable>true</IsPackable>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/soenneker/soenneker.validators.email.disposable.online</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/soenneker/soenneker.validators.email.disposable.online</RepositoryUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <LangVersion>latest</LangVersion>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
+        <None Include="..\icon.png" Pack="true" PackagePath="\" />
+        <PackageReference Include="Soenneker.Extensions.Configuration" Version="2.1.24" />
+
+        <PackageReference Include="Soenneker.Extensions.HttpResponseMessage" Version="2.1.30" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="2.1.21" />
+        <PackageReference Include="Soenneker.Utils.String" Version="2.1.35" />
+        <PackageReference Include="Soenneker.Validators.Validator" Version="2.1.17" />
+    </ItemGroup>
+</Project>
