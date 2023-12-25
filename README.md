@@ -8,5 +8,5 @@
 ## Installation
 
 ```
-Install-Package Soenneker.Validators.Email.Disposable.Online
+dotnet add package Soenneker.Validators.Email.Disposable.Online
 ```
