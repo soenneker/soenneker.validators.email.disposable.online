@@ -39,7 +39,7 @@
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="2.1.79" />
 
         <PackageReference Include="Soenneker.Extensions.HttpResponseMessage" Version="2.1.115" />
-        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="2.1.96" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="2.1.97" />
         <PackageReference Include="Soenneker.Utils.String" Version="2.1.173" />
         <PackageReference Include="Soenneker.Validators.Validator" Version="2.1.50" />
     </ItemGroup>
