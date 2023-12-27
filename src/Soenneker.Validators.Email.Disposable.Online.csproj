@@ -14,7 +14,7 @@
         <AssemblyName>Soenneker.Validators.Email.Disposable.Online</AssemblyName>
         <PackageId>Soenneker.Validators.Email.Disposable.Online</PackageId>
         <PackageTags>validation validator email disposable temporary c# .net dotnet</PackageTags>
-        <Copyright>Copyright © 2023 Jake Soenneker</Copyright>
+        <Copyright>Copyright © 2024 Jake Soenneker</Copyright>
         <Authors>Jake Soenneker</Authors>
         <Company>https://soenneker.com</Company>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
