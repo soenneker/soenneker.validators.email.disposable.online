@@ -24,22 +24,14 @@ public class Fixture : UnitFixture
 
     private static void SetupIoC(IServiceCollection services)
     {
+        services.AddLogging(builder =>
+        {
+            builder.AddSerilog(dispose: true);
+        });
+
         IConfiguration config = TestUtil.BuildConfig();
-
-        services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
-        services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
-
-        var injectableTestOutputSink = new InjectableTestOutputSink();
-
-        ILogger serilogLogger = new LoggerConfiguration()
-            .WriteTo.InjectableTestOutput(injectableTestOutputSink)
-            .CreateLogger();
-
-        Log.Logger = serilogLogger;
-
-        services.AddLogging(builder => { builder.AddSerilog(dispose: true); });
-
         services.AddSingleton(config);
+
         services.AddEmailDisposableOnlineValidator();
     }
 }

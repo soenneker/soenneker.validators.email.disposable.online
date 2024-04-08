@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Soenneker.Extensions.Enumerable;
-using Soenneker.Extensions.HttpResponseMessage;
+using Soenneker.Extensions.HttpClient;
 using Soenneker.Utils.AsyncSingleton;
 using Soenneker.Utils.HttpClientCache.Abstract;
 using Soenneker.Utils.String.Abstract;
@@ -17,47 +17,30 @@ namespace Soenneker.Validators.Email.Disposable.Online;
 public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposableOnlineValidator
 {
     private readonly AsyncSingleton<HashSet<string>?> _disposableDomains;
-
-    private int _attempts;
-
     private readonly IStringUtil _stringUtil;
+    private readonly IHttpClientCache _httpClientCache;
 
     public EmailDisposableOnlineValidator(ILogger<Validator.Validator> logger, IHttpClientCache httpClientCache,
         IConfiguration config, IStringUtil stringUtil) : base(logger)
     {
         _stringUtil = stringUtil;
+        _httpClientCache = httpClientCache;
+
         _disposableDomains = new AsyncSingleton<HashSet<string>?>(async () =>
         {
-            // TODO: Use Polly
-
-            if (_attempts > 1)
-                return null;
-
-            _attempts++;
-
-            HttpClient httpClient = await httpClientCache.Get(nameof(EmailDisposableOnlineValidator));
-
             string? disposableJsonUri = config["Validators:Email:Disposable:Uri"];
 
             if (disposableJsonUri.IsNullOrEmpty())
                 disposableJsonUri = "https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.json";
 
-            Logger.LogInformation("Getting list of disposable email domains from uri ({}) ...", disposableJsonUri);
+            Logger.LogDebug("Getting list of disposable email domains from uri ({uri})...", disposableJsonUri);
 
-            HttpResponseMessage message;
+            HttpClient client = await httpClientCache.Get(nameof(EmailDisposableOnlineValidator));
 
-            try
-            {
-                message = await httpClient.GetAsync(disposableJsonUri);
-                message.EnsureSuccessStatusCode();
-            }
-            catch (Exception e)
-            {
-                Logger.LogError(e, "Failed to get the list of disposable email domains from uri ({uri})", disposableJsonUri);
-                return null;
-            }
+            var domains = await client.SendWithRetryToType<HashSet<string>>(disposableJsonUri, 3, logger: Logger);
 
-            var domains = await message.To<HashSet<string>>();
+            Logger.LogDebug("Finished retrieving list of disposable domains, count {domains}", domains?.Count);
+
             return domains;
         });
     }
@@ -71,7 +54,7 @@ public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposa
     {
         HashSet<string>? disposableDomains = await _disposableDomains.Get();
 
-        if (disposableDomains == null)
+        if (disposableDomains.IsNullOrEmpty())
         {
             Logger.LogWarning("Disposable email domains are not populated, returning true for valid for email ({email})", email);
             return null;
@@ -88,16 +71,20 @@ public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposa
         return true;
     }
 
-    public ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         GC.SuppressFinalize(this);
 
-        return _disposableDomains.DisposeAsync();
+        await _httpClientCache.Remove(nameof(EmailDisposableOnlineValidator));
+
+        await _disposableDomains.DisposeAsync();
     }
 
     public void Dispose()
     {
         GC.SuppressFinalize(this);
+
+        _httpClientCache.RemoveSync(nameof(EmailDisposableOnlineValidator));
 
         _disposableDomains.Dispose();
     }
