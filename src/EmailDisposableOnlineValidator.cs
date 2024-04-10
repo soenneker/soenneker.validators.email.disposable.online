@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Soenneker.Extensions.Enumerable;
 using Soenneker.Extensions.HttpClient;
+using Soenneker.Extensions.ValueTask;
 using Soenneker.Utils.AsyncSingleton;
 using Soenneker.Utils.HttpClientCache.Abstract;
 using Soenneker.Utils.String.Abstract;
@@ -35,9 +36,9 @@ public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposa
 
             Logger.LogDebug("Getting list of disposable email domains from uri ({uri})...", disposableJsonUri);
 
-            HttpClient client = await httpClientCache.Get(nameof(EmailDisposableOnlineValidator));
+            HttpClient client = await httpClientCache.Get(nameof(EmailDisposableOnlineValidator)).NoSync();
 
-            var domains = await client.SendWithRetryToType<HashSet<string>>(disposableJsonUri, 3, logger: Logger);
+            HashSet<string>? domains = await client.SendWithRetryToType<HashSet<string>>(disposableJsonUri, 3, logger: Logger).NoSync();
 
             Logger.LogDebug("Finished retrieving list of disposable domains, count {domains}", domains?.Count);
 
@@ -47,12 +48,12 @@ public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposa
 
     public async ValueTask WarmUp()
     {
-        await _disposableDomains.Get();
+        await _disposableDomains.Get().NoSync();
     }
 
     public async ValueTask<bool?> Validate(string email)
     {
-        HashSet<string>? disposableDomains = await _disposableDomains.Get();
+        HashSet<string>? disposableDomains = await _disposableDomains.Get().NoSync();
 
         if (disposableDomains.IsNullOrEmpty())
         {
@@ -75,9 +76,9 @@ public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposa
     {
         GC.SuppressFinalize(this);
 
-        await _httpClientCache.Remove(nameof(EmailDisposableOnlineValidator));
+        await _httpClientCache.Remove(nameof(EmailDisposableOnlineValidator)).NoSync();
 
-        await _disposableDomains.DisposeAsync();
+        await _disposableDomains.DisposeAsync().NoSync();
     }
 
     public void Dispose()
