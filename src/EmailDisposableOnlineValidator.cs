@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,7 @@ public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposa
         _stringUtil = stringUtil;
         _httpClientCache = httpClientCache;
 
-        _disposableDomains = new AsyncSingleton<HashSet<string>?>(async () =>
+        _disposableDomains = new AsyncSingleton<HashSet<string>?>(async (token, _) =>
         {
             string? disposableJsonUri = config["Validators:Email:Disposable:Uri"];
 
@@ -36,9 +37,9 @@ public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposa
 
             Logger.LogDebug("Getting list of disposable email domains from uri ({uri})...", disposableJsonUri);
 
-            HttpClient client = await httpClientCache.Get(nameof(EmailDisposableOnlineValidator)).NoSync();
+            HttpClient client = await httpClientCache.Get(nameof(EmailDisposableOnlineValidator), cancellationToken: token).NoSync();
 
-            HashSet<string>? domains = await client.SendWithRetryToType<HashSet<string>>(disposableJsonUri, 3, logger: Logger).NoSync();
+            HashSet<string>? domains = await client.SendWithRetryToType<HashSet<string>>(disposableJsonUri, 3, logger: Logger, cancellationToken: token).NoSync();
 
             Logger.LogDebug("Finished retrieving list of disposable domains, count {domains}", domains?.Count);
 
@@ -46,14 +47,14 @@ public class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposa
         });
     }
 
-    public async ValueTask WarmUp()
+    public async ValueTask WarmUp(CancellationToken cancellationToken = default)
     {
-        await _disposableDomains.Get().NoSync();
+        await _disposableDomains.Get(cancellationToken).NoSync();
     }
 
-    public async ValueTask<bool?> Validate(string email)
+    public async ValueTask<bool?> Validate(string email, CancellationToken cancellationToken = default)
     {
-        HashSet<string>? disposableDomains = await _disposableDomains.Get().NoSync();
+        HashSet<string>? disposableDomains = await _disposableDomains.Get(cancellationToken).NoSync();
 
         if (disposableDomains.IsNullOrEmpty())
         {

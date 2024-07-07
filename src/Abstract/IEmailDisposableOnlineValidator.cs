@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Soenneker.Validators.Validator.Abstract;
 
@@ -12,8 +13,8 @@ public interface IEmailDisposableOnlineValidator : IValidator, IAsyncDisposable,
     /// <summary>
     /// Not necessary to call on construction of this, but makes the first validation faster
     /// </summary>
-    ValueTask WarmUp();
+    ValueTask WarmUp(CancellationToken cancellationToken = default);
 
     /// <returns>Null if the online validation list cannot be reached</returns>
-    ValueTask<bool?> Validate(string email);
+    ValueTask<bool?> Validate(string email, CancellationToken cancellationToken = default);
 }
