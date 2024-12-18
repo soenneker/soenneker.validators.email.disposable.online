@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Soenneker.Tests.FixturedUnit;
 using Soenneker.Validators.Email.Disposable.Online.Abstract;
 using Xunit;
-using Xunit.Abstractions;
+
 
 namespace Soenneker.Validators.Email.Disposable.Online.Tests;
 
