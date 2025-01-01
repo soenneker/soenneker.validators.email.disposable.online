@@ -40,6 +40,6 @@
         <PackageReference Include="Soenneker.Extensions.HttpClient" Version="3.0.2303" />
         <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="3.0.1233" />
         <PackageReference Include="Soenneker.Utils.String" Version="3.0.1986" />
-        <PackageReference Include="Soenneker.Validators.Validator" Version="3.0.466" />
+        <PackageReference Include="Soenneker.Validators.Validator" Version="3.0.468" />
     </ItemGroup>
 </Project>
