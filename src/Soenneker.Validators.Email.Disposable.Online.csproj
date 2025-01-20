@@ -36,7 +36,7 @@
         <None Include="..\README.md" Pack="true" PackagePath="\" />
         <None Include="..\LICENSE" Pack="true" PackagePath="\" />
         <None Include="..\icon.png" Pack="true" PackagePath="\" />
-        <PackageReference Include="Soenneker.Extensions.Configuration" Version="3.0.611" />
+        <PackageReference Include="Soenneker.Extensions.Configuration" Version="3.0.612" />
         <PackageReference Include="Soenneker.Extensions.HttpClient" Version="3.0.2533" />
         <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="3.0.1343" />
         <PackageReference Include="Soenneker.Utils.String" Version="3.0.2100" />
