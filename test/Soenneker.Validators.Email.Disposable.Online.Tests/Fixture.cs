@@ -32,6 +32,6 @@ public class Fixture : UnitFixture
         IConfiguration config = TestUtil.BuildConfig();
         services.AddSingleton(config);
 
-        services.AddEmailDisposableOnlineValidator();
+        services.AddEmailDisposableOnlineValidatorAsSingleton();
     }
 }

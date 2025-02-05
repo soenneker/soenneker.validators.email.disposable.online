@@ -14,10 +14,13 @@ public static class EmailDisposableOnlineValidatorRegistrar
     /// <summary>
     /// Adds <see cref="IEmailDisposableOnlineValidator"/> as a singleton service. <para/>
     /// </summary>
-    public static void AddEmailDisposableOnlineValidator(this IServiceCollection services)
+    public static IServiceCollection AddEmailDisposableOnlineValidatorAsSingleton(this IServiceCollection services)
     {
+        services.AddHttpClientCacheAsSingleton()
+                .AddStringUtilAsSingleton();
+
         services.TryAddSingleton<IEmailDisposableOnlineValidator, EmailDisposableOnlineValidator>();
-        services.AddHttpClientCache();
-        services.AddStringUtilAsSingleton();
+
+        return services;
     }
 }
