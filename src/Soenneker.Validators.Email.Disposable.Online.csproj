@@ -41,7 +41,7 @@
         <PackageReference Include="Soenneker.Extensions.HttpClient" Version="3.0.3291" />
         <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="3.0.703" />
         <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="3.0.1680" />
-        <PackageReference Include="Soenneker.Utils.String" Version="3.0.2650" />
+        <PackageReference Include="Soenneker.Utils.String" Version="3.0.2651" />
         <PackageReference Include="Soenneker.Validators.Validator" Version="3.0.691" />
     </ItemGroup>
 </Project>
