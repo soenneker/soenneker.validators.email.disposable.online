@@ -16,10 +16,7 @@ public static class EmailDisposableOnlineValidatorRegistrar
     /// </summary>
     public static IServiceCollection AddEmailDisposableOnlineValidatorAsSingleton(this IServiceCollection services)
     {
-        services.AddHttpClientCacheAsSingleton()
-                .AddStringUtilAsSingleton();
-
-        services.TryAddSingleton<IEmailDisposableOnlineValidator, EmailDisposableOnlineValidator>();
+        services.AddHttpClientCacheAsSingleton().AddStringUtilAsSingleton().TryAddSingleton<IEmailDisposableOnlineValidator, EmailDisposableOnlineValidator>();
 
         return services;
     }

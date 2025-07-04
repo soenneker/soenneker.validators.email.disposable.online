@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -75,8 +74,6 @@ public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmail
 
     public async ValueTask DisposeAsync()
     {
-        GC.SuppressFinalize(this);
-
         await _httpClientCache.Remove(nameof(EmailDisposableOnlineValidator)).NoSync();
 
         await _disposableDomains.DisposeAsync().NoSync();
@@ -84,8 +81,6 @@ public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmail
 
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
-
         _httpClientCache.RemoveSync(nameof(EmailDisposableOnlineValidator));
 
         _disposableDomains.Dispose();

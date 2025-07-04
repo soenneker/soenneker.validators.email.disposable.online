@@ -1,15 +1,9 @@
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Sinks.XUnit.Injectable;
-using Serilog.Sinks.XUnit.Injectable.Extensions;
 using Soenneker.Fixtures.Unit;
 using Soenneker.Utils.Test;
 using Soenneker.Validators.Email.Disposable.Online.Registrars;
-using ILogger = Serilog.ILogger;
 
 namespace Soenneker.Validators.Email.Disposable.Online.Tests;
 
