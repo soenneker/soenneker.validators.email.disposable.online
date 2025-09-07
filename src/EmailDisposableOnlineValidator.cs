@@ -38,9 +38,9 @@ public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmail
 
             HttpClient client = await httpClientCache.Get(nameof(EmailDisposableOnlineValidator), cancellationToken: token).NoSync();
 
-            HashSet<string>? domains = await client.SendWithRetryToType<HashSet<string>>(disposableJsonUri, 3, logger: Logger, cancellationToken: token).NoSync();
+            HashSet<string>? domains = await client.SendToTypeWithRetry<HashSet<string>>(disposableJsonUri, 3, logger: Logger, cancellationToken: token).NoSync();
 
-            Logger.LogDebug("Finished retrieving list of disposable domains, count {domains}", domains?.Count);
+            Logger.LogDebug("Finished retrieving list of disposable domains, count {domains}", domains.Count);
 
             return domains;
         });
