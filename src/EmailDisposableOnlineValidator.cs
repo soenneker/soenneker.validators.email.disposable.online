@@ -27,7 +27,7 @@ public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmail
         _stringUtil = stringUtil;
         _httpClientCache = httpClientCache;
 
-        _disposableDomains = new AsyncSingleton<HashSet<string>?>(async (token, _) =>
+        _disposableDomains = new AsyncSingleton<HashSet<string>?>(async token =>
         {
             string? disposableJsonUri = config["Validators:Email:Disposable:Uri"];
 
