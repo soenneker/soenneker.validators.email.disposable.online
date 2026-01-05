@@ -20,30 +20,34 @@ public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmail
     private readonly AsyncSingleton<HashSet<string>?> _disposableDomains;
     private readonly IStringUtil _stringUtil;
     private readonly IHttpClientCache _httpClientCache;
+    private readonly IConfiguration _config;
 
     public EmailDisposableOnlineValidator(ILogger<Validator.Validator> logger, IHttpClientCache httpClientCache,
         IConfiguration config, IStringUtil stringUtil) : base(logger)
     {
         _stringUtil = stringUtil;
         _httpClientCache = httpClientCache;
+        _config = config;
 
-        _disposableDomains = new AsyncSingleton<HashSet<string>?>(async token =>
-        {
-            string? disposableJsonUri = config["Validators:Email:Disposable:Uri"];
+        _disposableDomains = new AsyncSingleton<HashSet<string>?>(CreateDisposableDomains);
+    }
 
-            if (disposableJsonUri.IsNullOrEmpty())
-                disposableJsonUri = "https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.json";
+    private async ValueTask<HashSet<string>?> CreateDisposableDomains(CancellationToken token)
+    {
+        string? disposableJsonUri = _config["Validators:Email:Disposable:Uri"];
 
-            Logger.LogDebug("Getting list of disposable email domains from uri ({uri})...", disposableJsonUri);
+        if (disposableJsonUri.IsNullOrEmpty())
+            disposableJsonUri = "https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.json";
 
-            HttpClient client = await httpClientCache.Get(nameof(EmailDisposableOnlineValidator), cancellationToken: token).NoSync();
+        Logger.LogDebug("Getting list of disposable email domains from uri ({uri})...", disposableJsonUri);
 
-            HashSet<string> domains = await client.SendToTypeWithRetry<HashSet<string>>(disposableJsonUri, 3, logger: Logger, cancellationToken: token).NoSync();
+        HttpClient client = await _httpClientCache.Get(nameof(EmailDisposableOnlineValidator), cancellationToken: token).NoSync();
 
-            Logger.LogDebug("Finished retrieving list of disposable domains, count {domains}", domains.Count);
+        HashSet<string> domains = await client.SendToTypeWithRetry<HashSet<string>>(disposableJsonUri, 3, logger: Logger, cancellationToken: token).NoSync();
 
-            return domains;
-        });
+        Logger.LogDebug("Finished retrieving list of disposable domains, count {domains}", domains.Count);
+
+        return domains;
     }
 
     public async ValueTask WarmUp(CancellationToken cancellationToken = default)
