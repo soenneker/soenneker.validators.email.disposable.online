@@ -25,7 +25,7 @@
     <PackageReference Include="xUnit.v3" Version="3.2.2" /></ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Soenneker.Validators.Email.Disposable.Online.csproj" />
+        <ProjectReference Include="..\..\src\Soenneker.Validators.Email.Disposable.Online\Soenneker.Validators.Email.Disposable.Online.csproj" />
     </ItemGroup>
 
     <ItemGroup>
