@@ -1,29 +1,28 @@
 using System.Threading.Tasks;
 using AwesomeAssertions;
-using Soenneker.Tests.FixturedUnit;
+using Soenneker.Tests.HostedUnit;
 using Soenneker.Validators.Email.Disposable.Online.Abstract;
-using Xunit;
 
 namespace Soenneker.Validators.Email.Disposable.Online.Tests;
 
-[Collection("Collection")]
-public class EmailDisposableOnlineValidatorTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class EmailDisposableOnlineValidatorTests : HostedUnitTest
 {
     private readonly IEmailDisposableOnlineValidator _validator;
 
-    public EmailDisposableOnlineValidatorTests(Fixture fixture, ITestOutputHelper outputHelper) : base(fixture, outputHelper)
+    public EmailDisposableOnlineValidatorTests(Host host) : base(host)
     {
         _validator = Resolve<IEmailDisposableOnlineValidator>();
     }
 
-    [Fact]
+    [Test]
     public async Task Validate_on_known_temporary_should_be_false()
     {
         bool? result = await _validator.Validate("blah@10minutemail.com", CancellationToken);
         result.Should().BeFalse();
     }
 
-    [Fact]
+    [Test]
     public async Task Validate_on_known_google_should_be_true()
     {
         bool? result = await _validator.Validate("blah@gmail.com", CancellationToken);
