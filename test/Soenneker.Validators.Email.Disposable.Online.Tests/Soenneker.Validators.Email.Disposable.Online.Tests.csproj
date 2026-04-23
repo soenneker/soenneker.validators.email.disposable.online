@@ -16,19 +16,13 @@
         </Content>
     </ItemGroup>
 
-<<<<<<< HEAD
     <ItemGroup>
         <PackageReference Include="Soenneker.Tests.HostedUnit" Version="4.0.13" />
         <PackageReference Include="Soenneker.Utils.Test" Version="4.0.314" />
         <PackageReference Include="TUnit" Version="1.37.24" />
     </ItemGroup>
-=======
-    <ItemGroup><PackageReference Include="Soenneker.Tests.FixturedUnit" Version="4.0.2305" /><PackageReference Include="Soenneker.Utils.Test" Version="4.0.315" />
-    <PackageReference Include="xUnit.v3" Version="3.2.2" /></ItemGroup>
->>>>>>> 314f0abf700debdd450c0a80e3f7578093b87db7
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Soenneker.Validators.Email.Disposable.Online\Soenneker.Validators.Email.Disposable.Online.csproj" />
     </ItemGroup>
 </Project>
-
