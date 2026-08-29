@@ -14,7 +14,7 @@ using Soenneker.Validators.Email.Disposable.Online.Abstract;
 
 namespace Soenneker.Validators.Email.Disposable.Online;
 
-///<inheritdoc cref="IEmailDisposableOnlineValidator"/>
+/// <inheritdoc cref="IEmailDisposableOnlineValidator"/>
 public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposableOnlineValidator
 {
     private readonly AsyncSingleton<HashSet<string>?> _disposableDomains;
