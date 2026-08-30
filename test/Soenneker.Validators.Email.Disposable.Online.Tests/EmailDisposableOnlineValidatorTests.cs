@@ -23,6 +23,13 @@ public class EmailDisposableOnlineValidatorTests : HostedUnitTest
     }
 
     [Test]
+    public async Task Validate_on_uppercase_known_temporary_should_be_false()
+    {
+        bool? result = await _validator.Validate("BLAH@10MINUTEMAIL.COM", System.Threading.CancellationToken.None);
+        result.Should().BeFalse();
+    }
+
+    [Test]
     public async Task Validate_on_known_google_should_be_true()
     {
         bool? result = await _validator.Validate("blah@gmail.com", System.Threading.CancellationToken.None);

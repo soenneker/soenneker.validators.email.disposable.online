@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,6 @@ using Soenneker.Validators.Email.Disposable.Online.Abstract;
 
 namespace Soenneker.Validators.Email.Disposable.Online;
 
-/// <inheritdoc cref="IEmailDisposableOnlineValidator"/>
 public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmailDisposableOnlineValidator
 {
     private readonly AsyncSingleton<HashSet<string>?> _disposableDomains;
@@ -43,7 +43,8 @@ public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmail
 
         HttpClient client = await _httpClientCache.Get(nameof(EmailDisposableOnlineValidator), cancellationToken: token).NoSync();
 
-        HashSet<string> domains = await client.SendToTypeWithRetry<HashSet<string>>(disposableJsonUri, 3, logger: Logger, cancellationToken: token).NoSync();
+        HashSet<string> downloadedDomains = await client.SendToTypeWithRetry<HashSet<string>>(disposableJsonUri, 3, logger: Logger, cancellationToken: token).NoSync();
+        var domains = new HashSet<string>(downloadedDomains, StringComparer.OrdinalIgnoreCase);
 
         Logger.LogDebug("Finished retrieving list of disposable domains, count {domains}", domains.Count);
 
@@ -55,17 +56,17 @@ public sealed class EmailDisposableOnlineValidator : Validator.Validator, IEmail
         await _disposableDomains.Get(cancellationToken).NoSync();
     }
 
-    public async ValueTask<bool?> Validate(string email, CancellationToken cancellationToken = default)
+    public async ValueTask<bool?> Validate(string? email, CancellationToken cancellationToken = default)
     {
         HashSet<string>? disposableDomains = await _disposableDomains.Get(cancellationToken).NoSync();
 
         if (disposableDomains.IsNullOrEmpty())
         {
-            Logger.LogWarning("Disposable email domains are not populated, returning true for valid for email ({email})", email);
+            Logger.LogWarning("Disposable email domains are not populated; validation is indeterminate");
             return null;
         }
 
-        string? domain = _stringUtil.GetDomainFromEmail(email);
+        string? domain = email is null ? null : _stringUtil.GetDomainFromEmail(email);
 
         if (domain == null)
             return true;

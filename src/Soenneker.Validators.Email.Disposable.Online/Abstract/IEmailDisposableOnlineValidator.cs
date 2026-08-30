@@ -11,17 +11,17 @@ namespace Soenneker.Validators.Email.Disposable.Online.Abstract;
 public interface IEmailDisposableOnlineValidator : IValidator, IAsyncDisposable, IDisposable
 {
     /// <summary>
-    /// Not necessary to call on construction of this, but makes the first validation faster
+    /// Downloads and caches the disposable-domain list before the first validation.
     /// </summary>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
     /// <returns>A task that completes when warmup is complete.</returns>
     ValueTask WarmUp(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Validates the request Basic credentials against the configured username and password hash.
+    /// Checks the email's extracted domain against the downloaded disposable-domain list.
     /// </summary>
     /// <param name="email">Email address to validate or query.</param>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>Null if the online validation list cannot be reached</returns>
-    ValueTask<bool?> Validate(string email, CancellationToken cancellationToken = default);
+    /// <returns><see langword="false"/> for a listed domain, <see langword="true"/> for an unlisted or unextractable domain, or <see langword="null"/> when the downloaded list is empty.</returns>
+    ValueTask<bool?> Validate(string? email, CancellationToken cancellationToken = default);
 }
