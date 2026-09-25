@@ -42,7 +42,7 @@
         <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.896" />
         <PackageReference Include="Soenneker.Extensions.HttpClient" Version="4.0.4079" />
-        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2093" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2094" />
         <PackageReference Include="Soenneker.Utils.String" Version="4.0.3237" />
         <PackageReference Include="Soenneker.Validators.Validator" Version="4.0.742" />
     </ItemGroup>
