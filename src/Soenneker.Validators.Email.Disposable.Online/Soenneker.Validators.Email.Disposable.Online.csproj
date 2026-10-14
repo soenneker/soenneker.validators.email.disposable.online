@@ -40,10 +40,10 @@
         <None Include="..\..\README.md" Pack="true" PackagePath="\" />
         <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
         <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
-        <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.903" />
-        <PackageReference Include="Soenneker.Extensions.HttpClient" Version="4.0.4124" />
-        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2115" />
-        <PackageReference Include="Soenneker.Utils.String" Version="4.0.3268" />
-        <PackageReference Include="Soenneker.Validators.Validator" Version="4.0.745" />
+        <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.909" />
+        <PackageReference Include="Soenneker.Extensions.HttpClient" Version="4.0.4131" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2123" />
+        <PackageReference Include="Soenneker.Utils.String" Version="4.0.3274" />
+        <PackageReference Include="Soenneker.Validators.Validator" Version="4.0.751" />
     </ItemGroup>
 </Project>
