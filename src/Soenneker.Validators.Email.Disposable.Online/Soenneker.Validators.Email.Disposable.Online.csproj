@@ -41,8 +41,8 @@
         <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
         <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.909" />
-        <PackageReference Include="Soenneker.Extensions.HttpClient" Version="4.0.4131" />
-        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2123" />
+        <PackageReference Include="Soenneker.Extensions.HttpClient" Version="4.0.4132" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.2124" />
         <PackageReference Include="Soenneker.Utils.String" Version="4.0.3274" />
         <PackageReference Include="Soenneker.Validators.Validator" Version="4.0.751" />
     </ItemGroup>
